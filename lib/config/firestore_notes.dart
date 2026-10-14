@@ -9,16 +9,34 @@ class FireStoreNotes {
     notesCollection = connection.collection('notes');
   }
 
-  INSERT (Map<String, dynamic> note) async {
-    notesCollection!.doc().set(note);
+  Future<bool> INSERT (Map<String, dynamic> note) async {
+    try {
+      notesCollection!.doc().set(note);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
-  UPDATE (Map<String, dynamic> note, String id) async {
+  Future<bool> UPDATE (Map<String, dynamic> note, String id) async {
+    try {
     notesCollection!.doc(id).update(note);
+    return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
-  DELETE (String id) async {
-    notesCollection!.doc(id).delete();
+  Future<bool> DELETE (String id) async {
+    try {
+      notesCollection!.doc(id).delete();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   Stream<QuerySnapshot> SELECT () {

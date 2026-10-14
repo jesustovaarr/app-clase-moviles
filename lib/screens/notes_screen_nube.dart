@@ -44,7 +44,7 @@ class _NotesScreenState extends State<NotesScreenNube> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, "/add").then((value) {
+        onPressed: () => Navigator.pushNamed(context, "/addNube").then((value) {
           setState(() {});
         }),
 
@@ -81,9 +81,15 @@ class _NotesScreenState extends State<NotesScreenNube> {
 
             IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, "/add", arguments: note).then((
-                  value,
-                ) {
+                Navigator.pushNamed(
+                  context,
+                  "/addNube",
+                  arguments: {
+                    "idNote": note.id,
+                    "title": note.get("title"),
+                    "content": note.get("content"),
+                  },
+                  ).then((value) {
                   setState(() {});
                 });
               },
@@ -112,16 +118,16 @@ class _NotesScreenState extends State<NotesScreenNube> {
         TextButton(
           child: Text("Aceptar"),
           onPressed: () {
-            // notesDB!.DELETE(idNote).then((value) {
-            //   String msj = (value == 1)
-            //       ? "Registro borrado"
-            //       : "Ha ocurrido un problema con el borrado";
-            //   ScaffoldMessenger.of(context).showSnackBar(
-            //     SnackBar(content: Text(msj), duration: Duration(seconds: 3)),
-            //   );
-            // });
-            // Navigator.of(context).pop();
-            // setState(() {});
+            _firestoreNotes!.DELETE(idNote).then((value) {
+              String msj = (value == 1)
+                  ? "Registro borrado"
+                  : "Ha ocurrido un problema con el borrado";
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(msj), duration: Duration(seconds: 3)),
+              );
+            });
+            Navigator.of(context).pop();
+            setState(() {});
           },
         ),
 
