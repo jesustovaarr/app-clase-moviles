@@ -1,3 +1,4 @@
+import 'package:dmsn/screens/notes_screen_nube.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:dmsn/components/global_values.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
             "/note":(context) => NotesScreen(),
             "/add":(context) => AddNoteScreen(),
             "/register":(context) => const RegisterScreen(),
+            "/notesNube":(context) => NotesScreenNube()
           },
         );
       }
