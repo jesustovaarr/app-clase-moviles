@@ -12,6 +12,8 @@ class _AddNoteNubeScreenState extends State<AddNoteNubeScreen> {
   FireStoreNotes? notesDB;
   final conTitle = TextEditingController();
   final conContent = TextEditingController();
+  final conDate = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
   Map<String, dynamic>? note;
 
   @override
@@ -28,9 +30,22 @@ class _AddNoteNubeScreenState extends State<AddNoteNubeScreen> {
       conTitle.text = note!['title']!;
       conContent.text = note!['content']!;
     }
+    conDate.text = _selectedDate.toString();
 
-    final txtTitle = TextFormField(controller: conTitle);
-    final txtContent = TextFormField(maxLines: 8, controller: conContent);
+    final txtTitle = TextFormField(
+      controller: conTitle,
+      decoration: InputDecoration(hintText: "Title"),
+    );
+    final txtContent = TextFormField(
+      maxLines: 8,
+      controller: conContent,
+      decoration: InputDecoration(hintText: "Content"),
+    );
+    final txtDate = TextFormField(
+      controller: conDate,
+      decoration: InputDecoration(hintText: "Fecha de vencimiento"),
+      onTap: () => _desplegarFechas(context),
+    );
     final space = SizedBox(height: 20);
     final btnSave = ElevatedButton(
       onPressed: () {
@@ -39,7 +54,7 @@ class _AddNoteNubeScreenState extends State<AddNoteNubeScreen> {
               .INSERT({
                 "title": conTitle.text,
                 "content": conContent.text,
-                "fecha": "2026-09-25",
+                "fecha": conDate.text,
               })
               .then((value) {
                 if (value) {
@@ -55,7 +70,8 @@ class _AddNoteNubeScreenState extends State<AddNoteNubeScreen> {
         } else {
           notesDB!.UPDATE({
             "title":conTitle.text,
-            "content":conContent.text
+            "content":conContent.text,
+            "fecha":conDate.text,
           },note!['idNote']).then((value){
             if (value) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -73,7 +89,24 @@ class _AddNoteNubeScreenState extends State<AddNoteNubeScreen> {
     );
     return Scaffold(
       appBar: AppBar(title: Text("Insertar Nota Nube")),
-      body: Column(children: [txtTitle, space, txtContent, space, btnSave]),
+      body: Column(children: [txtTitle, space, txtContent,space, txtDate, space, btnSave]),
     );
   }
+
+  _desplegarFechas(BuildContext context) async{
+    final DateTime? _date = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100)
+    );
+
+    if (_date != null && _date != _selectedDate) {
+      setState(() {
+        _selectedDate = _date;
+      });
+    }
+
+  }
+
 }
