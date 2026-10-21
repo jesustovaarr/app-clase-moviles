@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dmsn/config/firestore_notes.dart';
 import 'package:flutter/material.dart';
-import 'package:dmsn/database/notes_dao.dart';
-import 'package:dmsn/database/notes_db.dart';
 
 class NotesScreenNube extends StatefulWidget {
   const NotesScreenNube({super.key});
