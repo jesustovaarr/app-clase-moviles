@@ -25,4 +25,20 @@ class PopularModel {
     required this.voteCount,
   });
 
+  factory PopularModel.fromMap(Map<String, dynamic> mapa) {
+    return PopularModel(
+      backdropPath: mapa[''],
+      id: mapa['id'],
+      title: mapa['title'],
+      originalLanguage: mapa['original_language'],
+      originalTitle: mapa['original_title'],
+      overview: mapa['overview'],
+      popularity: mapa['popularity'],
+      posterPath: mapa['poster_path'],
+      releaseDate: mapa['release_date'],
+      voteAverage: mapa['vote_average'],
+      voteCount: mapa['vote_count']
+    );
+  }
+
 }
