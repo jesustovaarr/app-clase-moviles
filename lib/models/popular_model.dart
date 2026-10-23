@@ -7,7 +7,7 @@ class PopularModel {
   String overview;
   double popularity;
   String posterPath;
-  DateTime releaseDate;
+  String releaseDate;
   double voteAverage;
   int voteCount;
 
@@ -27,7 +27,7 @@ class PopularModel {
 
   factory PopularModel.fromMap(Map<String, dynamic> mapa) {
     return PopularModel(
-      backdropPath: mapa[''],
+      backdropPath: mapa['backdrop_path'],
       id: mapa['id'],
       title: mapa['title'],
       originalLanguage: mapa['original_language'],
