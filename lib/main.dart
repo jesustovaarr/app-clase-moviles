@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dmsn/screens/add_note_screen_nube.dart';
 import 'package:dmsn/screens/api_popular_screen.dart';
 import 'package:dmsn/screens/notes_screen_nube.dart';
@@ -15,6 +16,7 @@ import 'package:dmsn/screens/register_screen.dart';
 
 void main() async{ 
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
   }
