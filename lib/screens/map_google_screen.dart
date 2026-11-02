@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapGoogleScreen extends StatefulWidget {
   const MapGoogleScreen({super.key});
@@ -12,26 +11,32 @@ class MapGoogleScreen extends StatefulWidget {
   State<MapGoogleScreen> createState() => _MapGoogleScreenState();
 }
 
+//document is ready
 class _MapGoogleScreenState extends State<MapGoogleScreen> {
-  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(20.5218, -100.814),
+    target: LatLng(37.43296265331129, -122.08832357078792),
     zoom: 14.4746,
   );
 
-  // static const CameraPosition _kLake = CameraPosition(
-  //   bearing: 192.8334901395799,
-  //   target: LatLng(32.5379, -117.0399),
-  //   tilt: 59.440717697143555,
-  //   zoom: 19.151926040649414,
-  // );
+  static const CameraPosition _kLake = CameraPosition(
+    bearing: 192.8334901395799,
+    target: LatLng(37.43296265331129, -122.08832357078792),
+    tilt: 59.440717697143555,
+    zoom: 19.151926040649414,
+  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: GoogleMap(
-        mapType: MapType.normal,
+        //normal-->se establecen las carreteras
+        //satelite--> la cartografia
+        //terreno-->relieve de los cerros
+        //hibrido-->satelite + normal
+        mapType: MapType.hybrid,
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
@@ -39,24 +44,28 @@ class _MapGoogleScreenState extends State<MapGoogleScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToTheLake,
-        label: const Text('To the Heaven!'),
-        icon: const Icon(Icons.star),
+        label: const Text('To the lake!'),
+        icon: const Icon(Icons.directions_boat),
       ),
     );
   }
 
   Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
-    // await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-    var position = await _determinePosition();
-    CameraPosition kPos = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(position.latitude, position.longitude),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414,
-    );
+    //await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
 
-    await controller.animateCamera(CameraUpdate.newCameraPosition(kPos));
+     var posicion=await _determinePosition();
+    
+    CameraPosition kMyPosition = CameraPosition(
+    bearing: 192.8334901395799,
+    target: LatLng(posicion.latitude, posicion.longitude),
+    tilt: 59.440717697143555,
+    zoom: 19.151926040649414,
+  );
+  
+
+  await controller.animateCamera(CameraUpdate.newCameraPosition(kMyPosition));
+
   }
 
   Future<Position> _determinePosition() async {
@@ -84,11 +93,12 @@ class _MapGoogleScreenState extends State<MapGoogleScreen> {
         return Future.error('Location permissions are denied');
       }
     }
-   
+
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
       return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.');
+        'Location permissions are permanently denied, we cannot request permissions.',
+      );
     }
 
     // When we reach here, permissions are granted and we can

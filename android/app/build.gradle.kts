@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
@@ -7,6 +9,18 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
+
+val envProperties = Properties()
+val envFile = rootProject.file("../.env")
+
+    if (envFile.exists()) {
+        envFile.inputStream().use { input ->
+        envProperties.load(input)
+        }
+    }
+
+val mapsApiKey = envProperties.getProperty("API_KEY_GOOGLE_CLOUD")
+?: error("No se encontró API_KEY_GOOGLE_CLOUD en el archivo .env")
 
 android {
     namespace = "com.example.dmsn"
@@ -31,6 +45,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["API_KEY_GOOGLE_CLOUD"] = mapsApiKey
     }
 
     buildTypes {

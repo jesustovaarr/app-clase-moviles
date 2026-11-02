@@ -1,3 +1,4 @@
+import 'package:dmsn/screens/map_google_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dmsn/screens/add_note_screen_nube.dart';
 import 'package:dmsn/screens/api_popular_screen.dart';
@@ -52,7 +53,8 @@ class MyApp extends StatelessWidget {
             "/register":(context) => const RegisterScreen(),
             "/notesNube":(context) => NotesScreenNube(),
             "/addNube":(context) => AddNoteNubeScreen(),
-            "/movies":(context) => ApiPopularScreen()
+            "/movies":(context) => ApiPopularScreen(),
+            "/map": (context) => const MapGoogleScreen()
           },
         );
       }
